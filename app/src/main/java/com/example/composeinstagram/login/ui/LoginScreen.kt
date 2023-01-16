@@ -1,6 +1,5 @@
-package com.example.composeinstagram.login
+package com.example.composeinstagram.login.ui
 
-import android.util.Patterns
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions

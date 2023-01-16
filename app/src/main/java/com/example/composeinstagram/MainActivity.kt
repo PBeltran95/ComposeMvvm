@@ -10,8 +10,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.composeinstagram.login.LoginScreen
-import com.example.composeinstagram.login.LoginViewModel
+import com.example.composeinstagram.login.ui.LoginScreen
+import com.example.composeinstagram.login.ui.LoginViewModel
 import com.example.composeinstagram.ui.theme.ComposeInstagramTheme
 
 class MainActivity : ComponentActivity() {
