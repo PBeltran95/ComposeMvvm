@@ -1,5 +1,8 @@
 package com.example.composeinstagram.login.ui
 
+import android.app.Activity
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
@@ -16,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -153,8 +157,9 @@ fun LoginDivider() {
 
 @Composable
 fun LoginButton(isLoginEnabled: Boolean) {
+    val activity = LocalContext.current as Activity
     Button(
-        onClick = { /*TODO*/ },
+        onClick = { showToast(activity) },
         enabled = isLoginEnabled,
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
@@ -189,7 +194,7 @@ fun PasswordField(modifier: Modifier, password: String, onTextChanged: (String) 
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color(0xFFB2B2B2),
+            textColor = Color.Black,
             backgroundColor = Color(0xFFFAFAFA),
             focusedBorderColor = WhiteBlue,
             unfocusedBorderColor = BorderGray
@@ -220,7 +225,7 @@ fun EmailField(modifier: Modifier, email: String, onTextChanged: (String) -> Uni
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
         colors = TextFieldDefaults.outlinedTextFieldColors(
-            textColor = Color(0xFFB2B2B2),
+            textColor = Color.Black,
             backgroundColor = Color(0xFFFAFAFA),
             focusedBorderColor = WhiteBlue,
             unfocusedBorderColor = BorderGray
@@ -242,6 +247,10 @@ fun InstagramLogo(modifier: Modifier) {
 @Composable
 fun LoginPreview() {
     ComposeInstagramTheme {
-//        LoginScreen()
+        LoginScreen(LoginViewModel())
     }
+}
+
+private fun showToast(context: Context) {
+    Toast.makeText(context, "This is a Toast", Toast.LENGTH_SHORT).show()
 }
