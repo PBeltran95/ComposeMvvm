@@ -1,6 +1,5 @@
-package com.example.composeinstagram
+package com.example.composeinstagram.login
 
-import android.app.Activity
 import android.util.Patterns
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -12,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -26,17 +25,17 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.composeinstagram.R
 import com.example.composeinstagram.ui.theme.*
-import java.util.regex.Pattern
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(loginViewModel: LoginViewModel) {
     Box(
         Modifier
             .fillMaxSize()
             .padding(16.dp)) {
         Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center))
+        Body(Modifier.align(Alignment.Center), loginViewModel)
         Footer(Modifier.align(Alignment.BottomCenter))
     }
 }
@@ -81,21 +80,19 @@ fun Header(modifier: Modifier) {
 }
 
 @Composable
-fun Body(modifier: Modifier) {
-    var email by rememberSaveable { mutableStateOf("") }
-    var password by rememberSaveable { mutableStateOf("") }
-    var isLoginEnabled by rememberSaveable { mutableStateOf(false) }
+fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
+    val email by loginViewModel.email.observeAsState(initial = "")
+    val password by loginViewModel.password.observeAsState(initial = "")
+    val isLoginEnabled by loginViewModel.isLoginEnabled.observeAsState(initial = false)
     Column(modifier = modifier) {
         InstagramLogo(Modifier.align(Alignment.CenterHorizontally))
         Spacer(modifier = Modifier.height(16.dp))
         EmailField(Modifier.fillMaxWidth(), email) {
-            email = it
-            isLoginEnabled = validateFields(email, password)
+            loginViewModel.onLoginChanged(email = it, password = password)
         }
         Spacer(modifier = Modifier.height(4.dp))
         PasswordField(Modifier.fillMaxWidth(), password) {
-            password = it
-            isLoginEnabled = validateFields(email, password)
+            loginViewModel.onLoginChanged(password = it, email = email)
         }
         Spacer(modifier = Modifier.height(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
@@ -106,11 +103,6 @@ fun Body(modifier: Modifier) {
         Spacer(modifier = Modifier.height(32.dp))
         SocialLogin()
     }
-}
-
-fun validateFields(email: String, password: String): Boolean {
-    return Patterns.EMAIL_ADDRESS.matcher(email).matches() &&
-            password.contains(Regex("[0-9]")) && password.length > 6
 }
 
 @Composable
@@ -251,6 +243,6 @@ fun InstagramLogo(modifier: Modifier) {
 @Composable
 fun LoginPreview() {
     ComposeInstagramTheme {
-        LoginScreen()
+//        LoginScreen()
     }
 }
