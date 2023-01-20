@@ -2,6 +2,7 @@ package com.example.composeinstagram.login.ui
 
 import android.app.Activity
 import android.content.Context
+import android.graphics.Paint.Align
 import android.widget.Toast
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -33,13 +34,22 @@ import com.example.composeinstagram.ui.theme.*
 
 @Composable
 fun LoginScreen(loginViewModel: LoginViewModel) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .padding(16.dp)) {
-        Header(Modifier.align(Alignment.TopEnd))
-        Body(Modifier.align(Alignment.Center), loginViewModel)
-        Footer(Modifier.align(Alignment.BottomCenter))
+    val modifier = Modifier.fillMaxSize()
+    Box(modifier.padding(16.dp)) {
+        val isLoading by loginViewModel.isLoading.observeAsState(initial = false)
+        if (isLoading) {
+            Box(modifier = modifier
+                .align(Alignment.Center)) {
+                CircularProgressIndicator(
+                    modifier = Modifier.align(Alignment.Center),
+                    color = WhiteBlue
+                )
+            }
+        } else {
+            Header(Modifier.align(Alignment.TopEnd))
+            Body(Modifier.align(Alignment.Center), loginViewModel)
+            Footer(Modifier.align(Alignment.BottomCenter))
+        }
     }
 }
 
@@ -100,7 +110,7 @@ fun Body(modifier: Modifier, loginViewModel: LoginViewModel) {
         Spacer(modifier = Modifier.height(8.dp))
         ForgotPassword(Modifier.align(Alignment.End))
         Spacer(modifier = Modifier.height(16.dp))
-        LoginButton(isLoginEnabled)
+        LoginButton(isLoginEnabled, loginViewModel)
         Spacer(modifier = Modifier.height(16.dp))
         LoginDivider()
         Spacer(modifier = Modifier.height(32.dp))
@@ -156,10 +166,9 @@ fun LoginDivider() {
 }
 
 @Composable
-fun LoginButton(isLoginEnabled: Boolean) {
-    val activity = LocalContext.current as Activity
+fun LoginButton(isLoginEnabled: Boolean, loginViewModel: LoginViewModel) {
     Button(
-        onClick = { showToast(activity) },
+        onClick = { loginViewModel.onLoginSelected() },
         enabled = isLoginEnabled,
         modifier = Modifier.fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
