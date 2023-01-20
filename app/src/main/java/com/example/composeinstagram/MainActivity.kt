@@ -13,7 +13,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.composeinstagram.login.ui.LoginScreen
 import com.example.composeinstagram.login.ui.LoginViewModel
 import com.example.composeinstagram.ui.theme.ComposeInstagramTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     private val loginViewModel by viewModels<LoginViewModel>()

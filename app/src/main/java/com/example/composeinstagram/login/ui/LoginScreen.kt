@@ -256,7 +256,7 @@ fun InstagramLogo(modifier: Modifier) {
 @Composable
 fun LoginPreview() {
     ComposeInstagramTheme {
-        LoginScreen(LoginViewModel())
+//        LoginScreen()
     }
 }
 
